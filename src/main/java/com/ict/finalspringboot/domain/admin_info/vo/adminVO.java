@@ -20,4 +20,6 @@ public class adminVO {
     private String admin_phone;
     private String admin_out;
 
+    private String admin_level_desc;
+
 }

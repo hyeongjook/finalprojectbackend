@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class userVO {
-
     private int user_idx;
     private String user_id;
     private String user_pw;
@@ -27,4 +26,5 @@ public class userVO {
     private String user_out_reason;
     private Date user_last_login;
 
+    private String user_level_desc;
 }

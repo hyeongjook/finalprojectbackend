@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/admin_info")
-@CrossOrigin(origins = "http://localhost:3000") // CORS 설정 추가 (Next.js에서 API를 호출하려면 이 설정이 필요)
+@CrossOrigin(origins = "http://localhost:3000") 
 public class AdminController {
 
     @Autowired
@@ -76,7 +76,7 @@ public class AdminController {
 
     // 관리자 상세보기
     @GetMapping("/detail/{admin_idx}")
-    public DataVO getadminsById(@PathVariable int admin_idx) { // admin_idx를 int로 변경
+    public DataVO getadminsById(@PathVariable("admin_idx") int admin_idx) { 
         DataVO dataVO = new DataVO();
 
         try {

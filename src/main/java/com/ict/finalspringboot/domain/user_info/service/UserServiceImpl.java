@@ -1,10 +1,10 @@
 package com.ict.finalspringboot.domain.user_info.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ict.finalspringboot.domain.user_info.mapper.UserMapper;
 import com.ict.finalspringboot.domain.user_info.vo.userVO;
@@ -15,39 +15,40 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    // 일반회원 목록 조회
     @Override
-    public userVO getusersById(int user_idx) {
-
-        return userMapper.getusersById(user_idx);
+    public List<userVO> userinfoListByLevel1() {
+        return userMapper.getUserListByLevel1();
     }
 
+    // 일반회원이 아닌 목록 조회
     @Override
-    public int userinfoDelete(int user_idx) {
-
-        return userMapper.userinfoDelete(user_idx);
+    public List<userVO> userinfoListByLevelNot1() {
+        return userMapper.getUserListByLevelNot1();
     }
 
-
+    // 회원 상세 조회
     @Override
-    public List<userVO> userinfoList() {
-        List<userVO> list = userMapper.userinfoList();
-        if (list == null) {
-            list = new ArrayList<>(); // null일 경우 빈 리스트로 초기화
-            System.out.println("데이터가 없습니다.");
-        }
-        return list;
+    public userVO getUsersDetails(int user_idx) {
+        return userMapper.getUsersDetails(user_idx);
     }
 
+    // 회원 수정
     @Override
     public int userinfoUpdate(userVO uvo) {
-
-        return userMapper.userinfoUpdate(uvo);
+        return userMapper.updateUser(uvo);
     }
 
+    // 회원 삭제
     @Override
-    public int userinfoWrite(userVO uvo) {
-
-        return userMapper.userinfoWrite(uvo); // Mapper 호출
+    @Transactional
+    public int userDelete(int user_idx) {
+        return userMapper.deleteUser(user_idx);
     }
 
+    // 프로필 이미지 URL 업데이트
+    @Override
+    public int updateProfileImage(int user_idx, String imageUrl) {
+        return userMapper.updateProfileImage(user_idx, imageUrl);
+    }
 }

@@ -6,20 +6,21 @@ import com.ict.finalspringboot.domain.user_info.vo.userVO;
 
 public interface UserService {
 
-    // 조회 불러오기
+    // 일반회원 목록 조회
+    List<userVO> userinfoListByLevel1();
 
-    List<userVO> userinfoList();
+    // 일반회원이 아닌 목록 조회
+    List<userVO> userinfoListByLevelNot1();
 
-    // 수정하기
+    // 회원 상세 조회
+    userVO getUsersDetails(int user_idx);
+
+    // 회원 수정
     int userinfoUpdate(userVO uvo);
 
-    // 삭제하기
-    int userinfoDelete(int user_idx);
+    // 회원 삭제
+    int userDelete(int user_idx);
 
-    // 생성하기
-    int userinfoWrite(userVO uvo);
-
-    // 상세보기
-    userVO getusersById(int user_idx);
-
+    // 프로필 이미지 URL 업데이트
+    int updateProfileImage(int user_idx, String imageUrl);
 }
