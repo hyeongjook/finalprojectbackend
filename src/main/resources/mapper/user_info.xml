@@ -53,4 +53,11 @@
         DELETE FROM user_db.user_info_tbl WHERE user_idx = #{user_idx}
     </delete>
 
+       <!-- 프로필 이미지 URL 업데이트 -->
+   <update id="updateProfileImage" parameterType="map">
+      UPDATE user_db.user_info_tbl
+      SET user_profile = #{image_url}
+      WHERE user_idx = #{user_idx}
+   </update>
+
 </mapper>
