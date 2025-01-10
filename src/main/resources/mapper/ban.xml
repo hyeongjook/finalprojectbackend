@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ict.finalspringboot.domain.ban.mapper.BanMapper">
+
+   
+    <!-- 모든 차단된 사용자 목록 조회 -->
+     <select id="getAllBannedUsers" resultType="com.ict.finalspringboot.domain.ban.vo.BanVO">
+        <![CDATA[
+        SELECT 
+            ub.user_stop_idx,
+            ui.user_id,
+            ui.user_name,
+            ui.user_email,
+            ui.user_reg_date,
+            ub.stop_date,
+            ub.stop_period,
+            ub.stop_end_date,
+            ub.stop_reason
+        FROM 
+            user_ban_tbl ub
+        INNER JOIN 
+            user_info_tbl ui ON ub.user_idx = ui.user_idx
+        ORDER BY 
+            ub.stop_date DESC
+        ]]>
+    </select>
+
+    
+    <!-- 특정 차단된 사용자 조회 -->
+    <select id="getBanById" resultType="com.ict.finalspringboot.domain.ban.vo.BanVO">
+        <![CDATA[
+        SELECT 
+            ub.user_stop_idx,
+            ui.user_id,
+            ui.user_name,
+            ui.user_email,
+            ui.user_reg_date,
+            ub.stop_date,
+            ub.stop_period,
+            ub.stop_end_date,
+            ub.stop_reason
+        FROM 
+            user_ban_tbl ub
+        INNER JOIN 
+            user_info_tbl ui ON ub.user_idx = ui.user_idx
+        WHERE 
+            ub.user_stop_idx = #{user_stop_idx}
+        ]]>
+    </select>
+
+    <!-- 사용자 차단 -->
+    <insert id="addBan">
+        <![CDATA[
+        INSERT INTO user_ban_tbl (user_idx, stop_date, stop_period, stop_end_date, stop_reason, stop_other, admin_idx)
+        VALUES (#{user_idx}, #{stop_date}, #{stop_period}, #{stop_end_date}, #{stop_reason}, #{stop_other}, #{admin_idx})
+        ]]>
+    </insert>
+
+    <!-- 차단 정보 수정 -->
+    <update id="updateBan">
+        <![CDATA[
+        UPDATE user_ban_tbl
+        SET 
+            stop_date = #{stop_date},
+            stop_period = #{stop_period},
+            stop_end_date = #{stop_end_date},
+            stop_reason = #{stop_reason},
+            stop_other = #{stop_other}
+        WHERE 
+            user_stop_idx = #{user_stop_idx}
+        ]]>
+    </update>
+
+    <!-- 차단 해제 -->
+    <delete id="deleteBan">
+        <![CDATA[
+        DELETE FROM user_ban_tbl
+        WHERE user_stop_idx = #{user_stop_idx}
+        ]]>
+    </delete>
+
+</mapper>
