@@ -6,13 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ict.finalspringboot.common.util.FileUploadController;
 import com.ict.finalspringboot.domain.auth.vo.DataVO;
 import com.ict.finalspringboot.domain.user_info.service.UserService;
 import com.ict.finalspringboot.domain.user_info.vo.userVO;
-import com.ict.finalspringboot.common.util.FileUploadController;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -152,41 +161,42 @@ public class UserController {
         return dataVO;
     }
 
+    // 프로필 이미지 업로드 및 수정
     @PostMapping("/uploadProfileImage/{user_idx}")
-public ResponseEntity<DataVO> uploadProfileImage(@PathVariable int user_idx, @RequestParam("file") MultipartFile file) {
-    DataVO dataVO = new DataVO();
-    try {
-        // 파일 업로드
-        String imageUrl = fileUploadController.uploadProfileImage(file);
+    public ResponseEntity<DataVO> uploadProfileImage(@PathVariable int user_idx, @RequestParam("file") MultipartFile file) {
+        DataVO dataVO = new DataVO();
+        try {
+            // 파일 업로드
+            String imageUrl = fileUploadController.FileUpload(file);
 
-        if (imageUrl == null || imageUrl.isEmpty()) {
+            if (imageUrl == null || imageUrl.isEmpty()) {
+                dataVO.setSuccess(false);
+                dataVO.setMessage("파일 업로드 실패");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dataVO);
+            }
+
+            // 사용자 프로필 이미지 URL 업데이트
+            userVO updatedUser = userService.getUsersDetails(user_idx);
+            updatedUser.setUser_profile(imageUrl); // 프로필 이미지 URL 설정
+
+            // 사용자 정보 업데이트
+            int result = userService.userinfoUpdate(updatedUser);
+
+            if (result > 0) {
+                dataVO.setSuccess(true);
+                dataVO.setMessage("프로필 이미지 업데이트 성공");
+                dataVO.setData(updatedUser);  // 업데이트된 사용자 정보 반환
+                return ResponseEntity.ok(dataVO);
+            } else {
+                dataVO.setSuccess(false);
+                dataVO.setMessage("프로필 이미지 업데이트 실패");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dataVO);
+            }
+        } catch (Exception e) {
+            log.error("Exception occurred while uploading profile image", e);
             dataVO.setSuccess(false);
-            dataVO.setMessage("파일 업로드 실패");
+            dataVO.setMessage("프로필 이미지 업로드 중 오류 발생");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dataVO);
         }
-
-        // 사용자 프로필 이미지 URL 업데이트
-        userVO updatedUser = userService.getUsersDetails(user_idx);
-        updatedUser.setUser_profile(imageUrl);  // 프로필 이미지 URL 설정
-
-        // 사용자 정보 업데이트
-        int result = userService.userinfoUpdate(updatedUser);
-
-        if (result > 0) {
-            dataVO.setSuccess(true);
-            dataVO.setMessage("프로필 이미지 업데이트 성공");
-            dataVO.setData(updatedUser);  // 업데이트된 사용자 정보 반환
-            return ResponseEntity.ok(dataVO);
-        } else {
-            dataVO.setSuccess(false);
-            dataVO.setMessage("프로필 이미지 업데이트 실패");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dataVO);
-        }
-    } catch (Exception e) {
-        log.error("Exception occurred while uploading profile image", e);
-        dataVO.setSuccess(false);
-        dataVO.setMessage("프로필 이미지 업로드 중 오류 발생");
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dataVO);
     }
-}
 }

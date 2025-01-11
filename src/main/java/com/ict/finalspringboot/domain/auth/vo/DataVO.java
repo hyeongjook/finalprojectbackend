@@ -14,7 +14,6 @@
         private Object data;
         private String token;
         private String message;
-        
 
         // 사용 방법
         // DataVO dataVO = new DataVO()

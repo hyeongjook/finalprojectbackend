@@ -40,9 +40,9 @@ file:
   upload-dir: D:/upload
 
 server:
-  port: 8080            # 서버 포트
+  port: 8080           
   servlet:
-    context-path: /     # 애플리케이션의 기본 경로 (root context)
+    context-path: /     
 
 mybatis:
   mapper-locations: mapper/*.xml
