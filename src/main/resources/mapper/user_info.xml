@@ -6,7 +6,7 @@
 
    <!-- 특정 사용자 조회 -->
  <select id="getUsersDetails" parameterType="int" resultType="com.ict.finalspringboot.domain.user_info.vo.userVO">
-    SELECT u.user_idx, u.user_id, u.user_pw, u.user_profile, u.user_reg_date, u.user_name, u.user_nickname, 
+    SELECT u.user_idx, u.user_id, u.user_pw, u.user_reg_date, u.user_name, u.user_nickname, 
            u.user_email, u.user_phone, u.user_level_idx, u.user_birth_date, u.user_gender, 
            u.user_out_date, u.user_out_reason, u.user_last_login, 
            ul.user_level_desc
@@ -40,7 +40,7 @@
  <!-- 사용자 정보 수정 -->
    <update id="updateUser" parameterType="com.ict.finalspringboot.domain.user_info.vo.userVO">
       UPDATE user_db.user_info_tbl
-      SET user_id = #{user_id}, user_pw = #{user_pw}, user_profile = #{user_profile}, 
+      SET user_id = #{user_id}, user_pw = #{user_pw},  
           user_name = #{user_name}, user_nickname = #{user_nickname}, 
           user_email = #{user_email}, user_phone = #{user_phone}, 
           user_level_idx = #{user_level_idx}, user_gender = #{user_gender}, 
@@ -53,11 +53,5 @@
         DELETE FROM user_db.user_info_tbl WHERE user_idx = #{user_idx}
     </delete>
 
-       <!-- 프로필 이미지 URL 업데이트 -->
-   <update id="updateProfileImage" parameterType="map">
-      UPDATE user_db.user_info_tbl
-      SET user_profile = #{image_url}
-      WHERE user_idx = #{user_idx}
-   </update>
 
 </mapper>

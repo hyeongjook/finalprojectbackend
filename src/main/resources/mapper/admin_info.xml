@@ -31,7 +31,6 @@
            END AS admin_out
     FROM user_db.admin_info_tbl ai
     LEFT JOIN user_db.admin_level_tbl al ON ai.admin_level_idx = al.admin_level_idx
-    ORDER BY ai.admin_idx DESC 
 </select>
 
 

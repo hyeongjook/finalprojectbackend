@@ -44,15 +44,15 @@ public class UserController {
         try {
             List<userVO> list = userService.userinfoListByLevel1();
             if (list == null || list.isEmpty()) {
-                list = new ArrayList<>(); // 빈 리스트로 초기화
+                list = new ArrayList<>(); 
             }
             dataVO.setSuccess(true);
             dataVO.setMessage("일반회원 조회 성공");
-            dataVO.setData(list); // 데이터를 JSON 형식으로 반환
+            dataVO.setData(list); 
         } catch (Exception e) {
             dataVO.setSuccess(false);
             dataVO.setMessage("일반회원 조회 실패");
-            log.error("Exception occurred while fetching level 1 user list", e); // 에러 로그
+            log.error("Exception occurred while fetching level 1 user list", e); 
         }
         return dataVO;
     }
@@ -64,15 +64,15 @@ public class UserController {
         try {
             List<userVO> list = userService.userinfoListByLevelNot1();
             if (list == null || list.isEmpty()) {
-                list = new ArrayList<>(); // 빈 리스트로 초기화
+                list = new ArrayList<>();
             }
             dataVO.setSuccess(true);
             dataVO.setMessage("user_level_idx가 1이 아닌 회원 조회 성공");
-            dataVO.setData(list); // 데이터를 JSON 형식으로 반환
+            dataVO.setData(list); 
         } catch (Exception e) {
             dataVO.setSuccess(false);
             dataVO.setMessage("user_level_idx가 1이 아닌 회원 조회 실패");
-            log.error("Exception occurred while fetching level not 1 user list", e); // 에러 로그
+            log.error("Exception occurred while fetching level not 1 user list", e); 
         }
         return dataVO;
     }
@@ -167,7 +167,7 @@ public class UserController {
         DataVO dataVO = new DataVO();
         try {
             // 파일 업로드
-            String imageUrl = fileUploadController.FileUpload(file);
+            String imageUrl = fileUploadController.uploadProfileImage(file);
 
             if (imageUrl == null || imageUrl.isEmpty()) {
                 dataVO.setSuccess(false);
